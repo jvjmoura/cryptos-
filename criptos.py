@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import PyPDF2
 import re
@@ -12,8 +13,14 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 import spacy
 
+# Configura a variável de ambiente TESSDATA_PREFIX
+os.environ['TESSDATA_PREFIX'] = '/usr/share/tesseract-ocr/4.00/tessdata'
+
 # Carregue o modelo de linguagem em português
 nlp = spacy.load("pt_core_news_sm")
+
+# Configurar caminho do Tesseract (ajuste o caminho conforme necessário)
+pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 
 def detect_sensitive_data(text):
     doc = nlp(text)
@@ -42,7 +49,11 @@ def detect_sensitive_data(text):
     return sensitive_data
 
 def perform_ocr(image):
-    return pytesseract.image_to_string(image, lang='por')
+    try:
+        return pytesseract.image_to_string(image, lang='por')
+    except pytesseract.TesseractError as e:
+        st.error(f"Erro ao executar OCR: {e}")
+        return ""
 
 def anonymize_image(image, sensitive_data):
     img_np = np.array(image)

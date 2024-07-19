@@ -7,3 +7,6 @@ libpoppler-cpp-dev
 poppler-utils
 tesseract-ocr
 libtesseract-dev
+tesseract-ocr
+libtesseract-dev
+poppler-utils

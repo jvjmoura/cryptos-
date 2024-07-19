@@ -5,3 +5,5 @@ libxext6
 libxrender-dev
 libpoppler-cpp-dev
 poppler-utils
+tesseract-ocr
+libtesseract-dev
